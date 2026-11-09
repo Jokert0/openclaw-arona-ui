@@ -6,6 +6,21 @@
 
 > 本项目是非官方界面定制，不包含独立的 AI 服务。模型配置、Agent 执行、消息处理和 Gateway 仍由 OpenClaw 提供。主题包需要与 Gateway 版本匹配，不能作为通用皮肤安装到任意 OpenClaw 版本。
 
+## 界面预览
+
+阿罗娜全界面背景、蓝白配色与半透明面板效果：
+
+![阿罗娜主题聊天界面与半透明详情面板](docs/images/arona-chat-preview.png)
+
+<details>
+<summary>展开查看文件侧栏效果</summary>
+
+![阿罗娜主题文件侧栏与全界面背景](docs/images/arona-files-preview.png)
+
+</details>
+
+以上为 35% 面板底色设置下的模拟会话截图；静态图片不展示 GIF 播放与光点漂浮过程。
+
 ## 界面改动
 
 | 内容             | 说明                                                                                                      |

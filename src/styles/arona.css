@@ -1,0 +1,333 @@
+/* Arona skin: keep layout, message state and personal-background placement with
+   their existing owners. Only light mode receives these presentation rules. */
+:root[data-theme="light"] .sidebar {
+  --sidebar-bg: color-mix(in srgb, var(--bg-elevated) 35%, transparent);
+  border-color: var(--border);
+  backdrop-filter: var(--arona-sidebar-blur, none);
+  box-shadow: 6px 0 24px color-mix(in srgb, var(--accent) 3%, transparent);
+}
+
+/* The mobile drawer overlays messages; soften text behind it without blurring
+   the desktop navigation or the shared window canvas. */
+:root[data-theme="light"] .shell--mobile-nav {
+  --arona-sidebar-blur: blur(10px);
+}
+
+:root[data-theme="light"] .settings-sidebar {
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] .sidebar-rail {
+  background: color-mix(in srgb, var(--bg-elevated) 35%, transparent);
+}
+
+:root[data-theme="light"] :is(.nav-item.active, .nav-item--active, .nav-item[aria-current="page"]) {
+  color: var(--accent);
+  background: linear-gradient(110deg, var(--accent-subtle), var(--bg-hover));
+  box-shadow: inset 3px 0 var(--primary-hover);
+}
+
+:root[data-theme="light"] .sidebar-recent-session.sidebar-recent-session--active {
+  --session-row-bg: var(--accent-subtle);
+  color: var(--text-strong);
+  box-shadow: inset 2px 0 var(--primary-hover);
+}
+
+:root[data-theme="light"] :is(.card, .settings-group) {
+  border-color: var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+:root[data-theme="light"] :is(.btn.primary, .sidebar-rail__create .sidebar-new-session) {
+  color: var(--primary-foreground);
+  border-color: color-mix(in srgb, var(--primary-hover) 65%, var(--border));
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--card) 55%, transparent),
+    0 4px 12px var(--accent-glow);
+}
+
+:root[data-theme="light"]
+  :is(.btn.primary, .sidebar-rail__create .sidebar-new-session):hover:where(
+    :not(:disabled, [aria-disabled="true"])
+  ) {
+  background: var(--primary-hover);
+  box-shadow: 0 6px 18px var(--accent-glow);
+}
+
+:root[data-theme="light"] .sidebar-rail__create .sidebar-new-session:focus-visible {
+  outline-color: var(--text-strong);
+}
+
+:root[data-theme="light"] .agent-chat__input {
+  --chat-composer-surface: var(--card);
+  --chat-composer-light-outline: var(--border);
+  --chat-composer-hairline: var(--border);
+  border-color: var(--border);
+  box-shadow:
+    inset 0 1px 0 var(--card),
+    var(--shadow-lg);
+}
+
+/* Match the lazy composer's focus owner so its neutral light-mode reset cannot
+   erase the blue focus edge after navigation. Keep dictation status authoritative. */
+:root[data-theme="light"][data-theme-mode="light"]
+  .agent-chat__input:not(.agent-chat__input--dictating):has(
+    .agent-chat__composer-combobox > :is(textarea, input):focus
+  ) {
+  border-color: var(--primary-hover);
+  box-shadow:
+    0 0 0 3px var(--accent-subtle),
+    var(--shadow-lg);
+}
+
+:root[data-theme="light"] .agent-chat__welcome h2 {
+  color: var(--text-strong);
+  letter-spacing: -0.035em;
+}
+
+:root[data-theme="light"] .agent-chat__welcome-avatar {
+  border: 2px solid var(--bg-elevated);
+  box-shadow:
+    0 0 0 5px var(--accent-subtle),
+    var(--shadow-md);
+}
+
+:root[data-theme="light"] .chat-bubble {
+  border-color: var(--border);
+  background: var(--arona-reply-background);
+  color: var(--chat-text);
+}
+
+/* Both transcript layouts load after the shared skin. Scope to actual reply
+   surfaces, leaving working indicators and tool-card shells with their owners. */
+:root[data-theme="light"][data-theme-mode="light"]
+  .chat-group.assistant
+  > .chat-group-messages
+  > .chat-bubble:not(.chat-bubble--tool-shell, .chat-reading-indicator) {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--arona-reply-background);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--card) 78%, transparent),
+    var(--shadow-sm);
+}
+
+/* The flat transcript lets tables borrow the outer gutter. Arona replies have
+   a visible bubble, so keep the scroll viewport inside it and below the sticker. */
+:root[data-theme="light"][data-theme-mode="light"]
+  .chat-group.assistant
+  .chat-bubble
+  > .chat-text
+  > .markdown-table {
+  clear: both;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: 0;
+  left: auto;
+  right: auto;
+  transform: none;
+}
+
+:root[data-theme="light"] .chat-group.user .chat-bubble {
+  background: var(--arona-user-background);
+  color: var(--text-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+/* One decorative sticker per assistant bubble; no per-message blur or animation
+   is added to the transcript, which can contain many virtualized replies. */
+.chat-bubble:has(> .chat-arona-sticker) {
+  min-height: 104px;
+}
+
+.chat-arona-sticker {
+  display: block;
+  float: right;
+  width: 64px;
+  height: 64px;
+  margin: 0 0 8px 16px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.chat-arona-sticker img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The shell owns the Arona canvas geometry. The existing background renderer
+   still owns preference visibility, profile readiness and accessibility. */
+:root[data-theme="light"] .shell {
+  position: relative;
+  isolation: isolate;
+}
+
+:root[data-theme="light"] .shell__theme-background {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .shell__theme-background > openclaw-session-background {
+  z-index: 0;
+}
+
+:root[data-theme="light"] .shell__theme-background .session-background__image--theme {
+  height: 100%;
+  background-position: center;
+  mask-image: none;
+}
+
+/* Pane decorations keep their settings/lifecycle owner but yield painting to
+   the window canvas. Custom images and the Appearance preview stay pane-local. */
+:root[data-theme="light"]
+  .shell[data-theme-background]
+  :is(.sidebar-region__background, .new-session-page > openclaw-session-background) {
+  visibility: hidden;
+}
+
+:root[data-theme="light"] :is(.chat-details, .side-panel__panel, .side-panel__empty-body) {
+  background: color-mix(in srgb, var(--card) 35%, transparent);
+}
+
+:root[data-theme="light"] .chat-details {
+  backdrop-filter: blur(8px);
+}
+
+:root[data-theme="light"] :is(.side-panel__header, .sidebar-region [data-region-header="side"]) {
+  background: color-mix(in srgb, var(--card) 35%, transparent);
+}
+
+:root[data-theme="light"]
+  :is(.chat-tool-msg-body, .chat-tool-output__text, .chat-tool-card__raw-body, .chat-markdown pre) {
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+}
+@media (max-width: 640px) {
+  :root[data-theme="light"][data-theme-mode="light"]
+    .chat-group.assistant
+    > .chat-group-messages
+    > .chat-bubble:not(.chat-bubble--tool-shell, .chat-reading-indicator) {
+    padding: 14px;
+  }
+
+  .chat-bubble:has(> .chat-arona-sticker) {
+    min-height: 96px;
+  }
+
+  .chat-arona-sticker {
+    width: 56px;
+    height: 56px;
+    margin-left: 12px;
+  }
+}
+
+@media (forced-colors: active), (prefers-contrast: more), (prefers-reduced-transparency: reduce) {
+  :root[data-theme="light"] {
+    --arona-reply-background: var(--card);
+    --arona-user-background: var(--arona-user-surface);
+  }
+
+  :root[data-theme="light"] .sidebar {
+    --sidebar-bg: var(--bg-elevated);
+    backdrop-filter: none;
+  }
+
+  :root[data-theme="light"] :is(.settings-sidebar, .card, .settings-group) {
+    background: var(--bg-elevated);
+    backdrop-filter: none;
+  }
+
+  :root[data-theme="light"]
+    :is(
+      .chat-details,
+      .side-panel__panel,
+      .side-panel__empty-body,
+      .side-panel__header,
+      .sidebar-region [data-region-header="side"],
+      .chat-tool-msg-body,
+      .chat-tool-output__text,
+      .chat-tool-card__raw-body,
+      .chat-markdown pre
+    ) {
+    background: var(--card);
+    backdrop-filter: none;
+  }
+  :root[data-theme="light"] .agent-chat__input {
+    background: var(--card);
+  }
+}
+
+/* Two particle layers share the artwork's existing opacity and visibility owner.
+   Only their transforms animate; mobile keeps the larger foreground particles. */
+:root[data-theme="light"] .shell__theme-background .session-background__image--theme::before,
+:root[data-theme="light"] .shell__theme-background .session-background__image--theme::after {
+  position: absolute;
+  inset: -12%;
+  opacity: 1;
+  content: "";
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+:root[data-theme="light"] .shell__theme-background .session-background__image--theme::before {
+  background-image:
+    radial-gradient(circle at 8% 20%, rgb(255 255 255) 0 4px, transparent 11px),
+    radial-gradient(circle at 18% 68%, rgb(255 255 255) 0 5px, transparent 13px),
+    radial-gradient(circle at 28% 35%, rgb(147 223 255) 0 4px, transparent 11px),
+    radial-gradient(circle at 41% 85%, rgb(255 255 255) 0 5px, transparent 13px),
+    radial-gradient(circle at 55% 18%, rgb(255 255 255) 0 4px, transparent 11px),
+    radial-gradient(circle at 62% 62%, rgb(138 214 255) 0 5px, transparent 14px),
+    radial-gradient(circle at 77% 30%, rgb(255 255 255) 0 5px, transparent 13px),
+    radial-gradient(circle at 87% 75%, rgb(255 255 255) 0 4px, transparent 11px),
+    radial-gradient(circle at 94% 45%, rgb(182 236 255) 0 5px, transparent 14px);
+  animation: arona-particles-drift 20s ease-in-out infinite alternate;
+}
+
+:root[data-theme="light"] .shell__theme-background .session-background__image--theme::after {
+  background-image:
+    radial-gradient(circle at 15% 42%, rgb(255 255 255) 0 3px, transparent 8px),
+    radial-gradient(circle at 30% 12%, rgb(255 255 255) 0 4px, transparent 10px),
+    radial-gradient(circle at 38% 75%, rgb(255 255 255) 0 3px, transparent 9px),
+    radial-gradient(circle at 58% 38%, rgb(255 255 255) 0 3px, transparent 9px),
+    radial-gradient(circle at 68% 92%, rgb(255 255 255) 0 4px, transparent 11px),
+    radial-gradient(circle at 79% 60%, rgb(255 255 255) 0 3px, transparent 8px),
+    radial-gradient(circle at 90% 14%, rgb(255 255 255) 0 4px, transparent 10px);
+  animation: arona-particles-drift 28s ease-in-out -13s infinite alternate-reverse;
+}
+
+@keyframes arona-particles-drift {
+  from {
+    transform: translate3d(-2%, 6%, 0);
+  }
+  to {
+    transform: translate3d(3%, -12%, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  :root[data-theme="light"] .shell__theme-background .session-background__image--theme::after {
+    content: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce),
+  (forced-colors: active),
+  (prefers-contrast: more),
+  (prefers-reduced-transparency: reduce) {
+  :root[data-theme="light"] .shell__theme-background .session-background__image--theme::before,
+  :root[data-theme="light"] .shell__theme-background .session-background__image--theme::after {
+    content: none;
+    animation: none;
+  }
+}

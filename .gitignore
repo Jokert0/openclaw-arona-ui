@@ -1,0 +1,12 @@
+node_modules/
+.idea/
+
+# Project exclude paths
+/config/control-ui-boot-modules.json
+/src/app/unsupported-browser.html
+/src/assets/
+/src/e2e/fixtures/
+/src/i18n/.i18n/
+/src/lib/reactive/README.md
+/src/lit/solid-bridge.md
+/src/test-helpers/presentation-primitives-fixture.html
